@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+
+	<!-- member.joinRegiser -->
+	<insert id="joinRegiser">
+		INSERT INTO dsg_member(name, birth, email, pw, pwcheck) VALUES(
+		#{name}, #{birth}, #{email}, #{pw}, #{pwcheck})
+		;
+	</insert>
+
+	<!-- member.idcheck -->
+	<select id="idcheck" resultType="String">
+		SELECT name FROM dsg_member
+		WHERE 1=1
+		AND email = #{email}
+		AND pw = #{pw}
+		;
+	</select>
+
+	<!-- member.pwcheck -->
+	<select id="pwcheck" resultType="int">
+		SELECT count(*) FROM dsg_member
+		WHERE 1=1
+		AND pw = #{pw}
+		;
+	</select>
+	
+	<update id="getKey" parameterType="Map">
+		update dsg_member set
+		userKey = #{userKey}
+		where email = #{email}
+	</update>
+</mapper>

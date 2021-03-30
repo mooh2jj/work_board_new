@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<select id="selectAll" resultType="com.myspring.dsgproj.dto.board.BoardDTO">
+		SELECT 
+			bno, title, content, writer, regDate, name 
+		FROM dsg_board b, dsg_member m
+		where b.writer = m.name
+		order by regDate desc
+		;
+	</select>
+
+	<insert id="insert">
+		INSERT INTO dsg_board (bno, title, content, writer, regDate, sessionId)
+		VALUES( (SELECT IFNULL(MAX(bno)+1, 1)FROM dsg_board dsb),#{title}, #{content}, #{writer}, NOW(), #{sessionId})
+		;
+	</insert>
+	
+	<select id="detail" resultType="com.myspring.dsgproj.dto.board.BoardDTO">
+		select bno, title, content, writer from dsg_board
+		where 1=1
+		and bno = #{bno}
+		;
+	</select>
+	
+	<update id="update">
+		UPDATE dsg_board SET
+		title = #{title},
+		content = #{content}
+		where bno = #{bno}
+		;
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM dsg_board
+		WHERE bno = #{bno}
+	</delete>
+</mapper>
