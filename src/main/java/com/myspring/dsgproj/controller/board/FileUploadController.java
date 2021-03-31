@@ -54,6 +54,12 @@ public class FileUploadController {
 		return "file/write_ajax";
 	}
 	
+	@RequestMapping("write_ajax2.do")
+	public String write_ajax2() {
+		logger.info("write_ajax2.do start...");
+		return "file/write_ajax2";
+	}
+	
 	@RequestMapping(value = "insert.do", method = RequestMethod.POST)
 	public String uploadFileSet(MultipartFile file, BoardDTO dto, HttpSession session, Model model) throws Exception {
 		
@@ -130,27 +136,29 @@ public class FileUploadController {
 		return "file/uploadResult";
 	}
 	
-//	uploadAjaxAction
+//	uploadAjaxAction, produces = "text/plain;charset=utf-8" : 파일한글처리
 	@ResponseBody
-	@RequestMapping(value = "uploadAjaxAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "uploadAjaxAction.do", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public ResponseEntity<String> uploadAjaxAction(MultipartHttpServletRequest mtfRequest) throws Exception {
 		logger.info("uploadAjaxAction.do start...");
 		// MultipatFile[] x
 		String savedName = "";
-		
 		List<MultipartFile> fileList = mtfRequest.getFiles("uploadFile");
 		
-		for(MultipartFile mf : fileList) {
-			savedName = new String(mf.getOriginalFilename().getBytes("8859_1"), "UTF-8");
-			logger.info("originalName: " + savedName);
-			logger.info("extension: " + FilenameUtils.getExtension(savedName));
-			logger.info("size:" + mf.getSize());
-			logger.info("contentType:" + mf.getContentType());
-			
-			savedName = UploadFileUtils.uploadFile(uploadPath, mf.getOriginalFilename(), mf.getBytes());
-			
+		if(!fileList.isEmpty()) {	// 파일이 있다면,
+			for(MultipartFile mf : fileList) {
+				savedName = new String(mf.getOriginalFilename().getBytes("8859_1"), "UTF-8");	// 아직도 한글이 깨짐...
+				logger.info("originalName: " + savedName);
+				logger.info("extension: " + FilenameUtils.getExtension(savedName));
+				logger.info("size:" + mf.getSize());
+				logger.info("contentType:" + mf.getContentType());
+				
+				savedName = UploadFileUtils.uploadFile(uploadPath, mf.getOriginalFilename(), mf.getBytes());
+			}
 		}
-		return new ResponseEntity<String>(savedName, HttpStatus.OK);	// dataType : text로 해야..
+		return new ResponseEntity<String>("fileUpload success!", HttpStatus.OK);	// dataType : text로 해야..
 	}
+	
+
 
 }

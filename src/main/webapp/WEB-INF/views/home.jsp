@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h2>Exception_page</h2>
-에러가 발생하였습니다.
-원인 :${exception.getMessage()}
+<h2>home</h2>
 </body>
 </html>

@@ -27,6 +27,10 @@
 		location.href = "/fileUpload/write_ajax.do";
 	}
 	
+	function btnAjaxUpload2() {
+		location.href = "/fileUpload/write_ajax2.do";
+	}
+	
 
 </script>
 </head>
@@ -39,6 +43,7 @@
 		<span><button type="button" onclick="btnFileUpload();">파일등록</button></span>
 		<span><button type="button" onclick="btnMultiFileUpload();">다중파일등록</button></span>
 		<span><button type="button" onclick="btnAjaxUpload();">Ajax파일등록</button></span>
+		<span><button type="button" onclick="btnAjaxUpload2();">Ajax2파일등록</button></span>
 	</c:if>
 </div>
 <br/>
