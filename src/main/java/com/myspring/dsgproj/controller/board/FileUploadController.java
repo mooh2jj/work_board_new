@@ -11,10 +11,13 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -38,10 +41,17 @@ public class FileUploadController {
 		logger.info("write.do start...");
 		return "file/write";
 	}
+	
 	@RequestMapping("write_multi.do")
 	public String write_multi() {
 		logger.info("write_multi.do start...");
 		return "file/write_multi";
+	}
+	
+	@RequestMapping("write_ajax.do")
+	public String write_ajax() {
+		logger.info("write_ajax.do start...");
+		return "file/write_ajax";
 	}
 	
 	@RequestMapping(value = "insert.do", method = RequestMethod.POST)
@@ -119,4 +129,28 @@ public class FileUploadController {
 		
 		return "file/uploadResult";
 	}
+	
+//	uploadAjaxAction
+	@ResponseBody
+	@RequestMapping(value = "uploadAjaxAction.do", method = RequestMethod.POST)
+	public ResponseEntity<String> uploadAjaxAction(MultipartHttpServletRequest mtfRequest) throws Exception {
+		logger.info("uploadAjaxAction.do start...");
+		// MultipatFile[] x
+		String savedName = "";
+		
+		List<MultipartFile> fileList = mtfRequest.getFiles("uploadFile");
+		
+		for(MultipartFile mf : fileList) {
+			savedName = new String(mf.getOriginalFilename().getBytes("8859_1"), "UTF-8");
+			logger.info("originalName: " + savedName);
+			logger.info("extension: " + FilenameUtils.getExtension(savedName));
+			logger.info("size:" + mf.getSize());
+			logger.info("contentType:" + mf.getContentType());
+			
+			savedName = UploadFileUtils.uploadFile(uploadPath, mf.getOriginalFilename(), mf.getBytes());
+			
+		}
+		return new ResponseEntity<String>(savedName, HttpStatus.OK);	// dataType : text로 해야..
+	}
+
 }

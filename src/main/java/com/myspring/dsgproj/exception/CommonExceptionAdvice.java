@@ -1,0 +1,21 @@
+package com.myspring.dsgproj.exception;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@Controller
+public class CommonExceptionAdvice {
+
+	private static final Logger logger = LoggerFactory.getLogger(CommonExceptionAdvice.class);
+	
+	@ExceptionHandler(Exception.class)
+	public String except(Exception ex, Model model) {
+		logger.info("Exception....."+ex.getMessage());
+		model.addAttribute("exception", ex);
+		logger.info(model.toString());
+		return "error_page";
+	}
+}

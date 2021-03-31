@@ -22,6 +22,12 @@
 	function btnMultiFileUpload() {
 		location.href = "/fileUpload/write_multi.do";
 	}
+	
+	function btnAjaxUpload() {
+		location.href = "/fileUpload/write_ajax.do";
+	}
+	
+
 </script>
 </head>
 <body>
@@ -32,6 +38,7 @@
 		<span><button type="button" onclick="btnWrite();">글등록</button></span>
 		<span><button type="button" onclick="btnFileUpload();">파일등록</button></span>
 		<span><button type="button" onclick="btnMultiFileUpload();">다중파일등록</button></span>
+		<span><button type="button" onclick="btnAjaxUpload();">Ajax파일등록</button></span>
 	</c:if>
 </div>
 <br/>
