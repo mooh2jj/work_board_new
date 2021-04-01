@@ -1,5 +1,6 @@
 package com.myspring.dsgproj.controller.board;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -58,6 +59,12 @@ public class FileUploadController {
 	public String write_ajax2() {
 		logger.info("write_ajax2.do start...");
 		return "file/write_ajax2";
+	}
+	
+	@RequestMapping("write_excel.do")
+	public String write_excel() {
+		logger.info("write_excel.do start...");
+		return "file/write_excel";
 	}
 	
 	@RequestMapping(value = "insert.do", method = RequestMethod.POST)
@@ -159,6 +166,27 @@ public class FileUploadController {
 		return new ResponseEntity<String>("fileUpload success!", HttpStatus.OK);	// dataType : text로 해야..
 	}
 	
-
+//	excelUploadAjax
+	@RequestMapping(value = "excelUploadAjax.do", method = RequestMethod.POST)
+	public String excelUploadAjax(MultipartFile testFile, MultipartHttpServletRequest request) throws Exception {
+		logger.info("excelUploadAjax.do start...");
+		
+		MultipartFile excelFile = request.getFile("excelFile");
+		
+        if(excelFile == null || excelFile.isEmpty()) {
+            throw new RuntimeException("엑셀파일을 선택해 주세요");
+        }
+        
+        File destFile = new File("uploadPath\\"+excelFile.getOriginalFilename());
+        
+        try {
+            //내가 설정한 위치에 내가 올린 파일을 만들고 
+            excelFile.transferTo(destFile);
+        }catch(Exception e) {
+            throw new RuntimeException(e.getMessage(),e);
+        }
+		
+		return "file/uploadResult";
+	}
 
 }

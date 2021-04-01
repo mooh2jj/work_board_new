@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.myspring.dsgproj.dto.member.MemberDTO;
 
@@ -32,21 +33,22 @@ public class MemberController {
 	
 	@Autowired
 	private SqlSession sqlSession;
-	
-//	@Autowired
-//	private UserMailSendService mailsender;
-	
+		
 	@Autowired
 	private JavaMailSender mailSender;
 	
 	@RequestMapping("/loginmain")
-	public String loginmain() {
+	public String loginmain(@RequestParam(value = "message", required = false) String message, Model model) {
+		// required = false 
+		// 최초로 로그인창 요청시 매개변수  message가 전송되지 않게 됨.
+		model.addAttribute("message", message);
+		
 		return "member/loginmain";
 	}
 	
 	
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	public String login(MemberDTO dto, HttpSession session, Model model) {
+	public String login(MemberDTO dto, HttpSession session, Model model, RedirectAttributes rAttr) {
 		logger.info("member/login.do start...");
 		logger.info("MemberDTO: "+ dto);
 		
@@ -60,9 +62,10 @@ public class MemberController {
 			
 			model.addAttribute("message", "success");
 			return "sessionCheck";
-		} else {
-			model.addAttribute("message", "error");
-			return "member/loginmain";
+		} else {				// 로그인 실패
+			rAttr.addAttribute("message", "error");
+//			model.addAttribute("message", "error");
+			return "redirect:loginmain";
 		}
 		
 	}
@@ -88,7 +91,7 @@ public class MemberController {
 		
 		model.addAttribute("message", "logout");
 		
-		return "member/loginmain";
+		return "redirect:loginmain";
 	}
 	
 	@RequestMapping("/join")

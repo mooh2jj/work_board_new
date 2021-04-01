@@ -31,6 +31,10 @@
 		location.href = "/fileUpload/write_ajax2.do";
 	}
 	
+	function btnExcelUpload() {
+		location.href = "/fileUpload/write_excel.do";
+	}
+	
 
 </script>
 </head>
@@ -44,6 +48,7 @@
 		<span><button type="button" onclick="btnMultiFileUpload();">다중파일등록</button></span>
 		<span><button type="button" onclick="btnAjaxUpload();">Ajax파일등록</button></span>
 		<span><button type="button" onclick="btnAjaxUpload2();">Ajax2파일등록</button></span>
+		<span><button type="button" onclick="btnExcelUpload();">엑셀파일등록</button></span>
 	</c:if>
 </div>
 <br/>
