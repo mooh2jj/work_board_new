@@ -33,16 +33,20 @@ function checkFileType(filePath) {
 	    return false;
     }
 
+   	var fileFormat = file.split("."); 
+   	var fileType = fileFormat[1];
+   	
     if (confirm("업로드 하시겠습니까?")) {
-
-      var options = {
+    	$("#excelUploadForm").attr("action","/fileUpload/excelUploadAjax.do");
+      	var options = {
 
         success : function(data) {
             console.log(data);
           	alert("모든 데이터가 업로드 되었습니다.");
 
         },
-        type : "POST"
+        type : "POST",
+        data : {"excelType" : fileType}
         };
       
       $("#excelUploadForm").ajaxSubmit(options);
@@ -57,14 +61,14 @@ function checkFileType(filePath) {
 <div align="center">
 <h2>Excel파일 업로드 등록</h2>
 <form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data"
-        method="post" action="/fileUpload/excelUploadAjax.do">
+        method="post">
 	<div class="uploadDiv">
 		<input type="file" id="excelFile" name="excelFile">
 	</div>
 	<div class="uploadResult">
 	</div>
 
-	<button type="button" onclick="check();">저장</button>
+	<button type="button" onclick="check();">업로드</button>
 	<button type="reset" id="btnCancle">취소</button>
 </form>
 </div> 	

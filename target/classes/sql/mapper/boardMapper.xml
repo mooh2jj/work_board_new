@@ -5,8 +5,8 @@
 
 <mapper namespace="board">
 	<select id="selectAll" resultType="com.myspring.dsgproj.dto.board.BoardDTO">
-		SELECT 
-			bno, title, content, writer, regDate, name 
+		SELECT
+		bno, title, content, writer, regDate, name
 		FROM dsg_board b, dsg_member m
 		where b.writer = m.name
 		order by regDate desc
@@ -18,14 +18,14 @@
 		VALUES( (SELECT IFNULL(MAX(bno)+1, 1)FROM dsg_board dsb),#{title}, #{content}, #{writer}, NOW(), #{sessionId})
 		;
 	</insert>
-	
+
 	<select id="detail" resultType="com.myspring.dsgproj.dto.board.BoardDTO">
 		select bno, title, content, writer from dsg_board
 		where 1=1
 		and bno = #{bno}
 		;
 	</select>
-	
+
 	<update id="update">
 		UPDATE dsg_board SET
 		title = #{title},
@@ -33,9 +33,31 @@
 		where bno = #{bno}
 		;
 	</update>
-	
+
 	<delete id="delete">
 		DELETE FROM dsg_board
 		WHERE bno = #{bno}
 	</delete>
+
+	<!-- insertExcel -->
+	<insert id="insertExcel">
+		INSERT INTO dsg_board
+		(
+		bno
+		, title
+		, content
+		, writer
+		, sessionId
+		)
+		VALUES
+		<foreach collection="list" item="item" separator=" , ">
+			(
+			(SELECT IFNULL(MAX(bno)+1, 1)FROM dsg_board dsb)
+			, #{item.title}
+			, #{item.content}
+			, #{item.writer}
+			, #{item.sessionId}
+			)
+		</foreach>
+	</insert>
 </mapper>

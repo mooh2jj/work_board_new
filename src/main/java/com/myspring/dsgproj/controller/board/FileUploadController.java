@@ -1,7 +1,7 @@
 package com.myspring.dsgproj.controller.board;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.myspring.dsgproj.dto.board.BoardDTO;
+import com.myspring.dsgproj.service.ExcelService;
 import com.myspring.dsgproj.utils.UploadFileUtils;
 
 @Controller
@@ -36,6 +37,10 @@ public class FileUploadController {
 	
 	@Autowired
 	SqlSession sqlSession; 
+	
+	
+	@Autowired
+	ExcelService excelService;
 	
 	@RequestMapping("write.do")
 	public String write() {
@@ -163,28 +168,27 @@ public class FileUploadController {
 				savedName = UploadFileUtils.uploadFile(uploadPath, mf.getOriginalFilename(), mf.getBytes());
 			}
 		}
-		return new ResponseEntity<String>("fileUpload success!", HttpStatus.OK);	// dataType : text로 해야..
+		return new ResponseEntity<String>("fileUpload success!", HttpStatus.CREATED);	//HttpStatus.CREATED : 201, dataType : text로 해야..
 	}
 	
 //	excelUploadAjax
 	@RequestMapping(value = "excelUploadAjax.do", method = RequestMethod.POST)
-	public String excelUploadAjax(MultipartFile testFile, MultipartHttpServletRequest request) throws Exception {
+	public String excelUploadAjax(MultipartHttpServletRequest request, Model model) throws Exception {
 		logger.info("excelUploadAjax.do start...");
 		
-		MultipartFile excelFile = request.getFile("excelFile");
+		List<BoardDTO> list = new ArrayList<>();
 		
-        if(excelFile == null || excelFile.isEmpty()) {
-            throw new RuntimeException("엑셀파일을 선택해 주세요");
-        }
-        
-        File destFile = new File("uploadPath\\"+excelFile.getOriginalFilename());
-        
-        try {
-            //내가 설정한 위치에 내가 올린 파일을 만들고 
-            excelFile.transferTo(destFile);
-        }catch(Exception e) {
-            throw new RuntimeException(e.getMessage(),e);
-        }
+//		MultipartFile excelFile = request.getFile("excelFile");
+		
+		String excelType = request.getParameter("excelType");
+		
+		if(excelType.equals("xlsx")) {
+			list = excelService.xlsxExcelReader(request);
+		} else if (excelType.equals("xls")) {
+			list = excelService.xlsExcelReader(request);
+		}
+		
+		model.addAttribute("msg", "fileUpladed");
 		
 		return "file/uploadResult";
 	}
