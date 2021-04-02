@@ -22,7 +22,8 @@ $(function(){
 				{"email" : email},
 				function(data, status){
 					dice_s = data;
-					alert(dice_s +", " +"이메일에 성공적으로 보냈습니다.");
+				/*  alert(dice_s +", " +"이메일에 성공적으로 보냈습니다."); */
+					alert("이메일에 성공적으로 보냈습니다.");
 				});
 		} else {
 			alert("이메일을 입력하세요");

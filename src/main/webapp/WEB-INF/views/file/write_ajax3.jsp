@@ -22,7 +22,7 @@
 	        var file = files[0]; // 첫번째 첨부파일
 	        console.log("file:",file);
 	        var formData = new FormData(); // 폼데이터 객체
-	        formData.append("file", file); // 첨부파일 추가
+	        formData.append("file", file); // 업로드파일 추가
 	        
 	        $.ajax({
 	            url: "${path}/fileUpload/uploadAjaxAction2.do",
