@@ -216,7 +216,7 @@ public class FileUploadController {
             // 이미지 파일이면
             if (mType != null) { 
                 headers.setContentType(mType);
-            // 이미지가 아니면
+            // 이미지가 아니면 : 일반파일 다운로드
             } else { 
                 fileName = fileName.substring(fileName.indexOf("_") + 1);
                 // 다운로드용 컨텐트 타입

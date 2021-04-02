@@ -13,7 +13,7 @@
 		
 	    // 파일 업로드 영역에서 기본효과를 제한
 	    $(".fileDrop").on("dragenter dragover", function(e){
-	        e.preventDefault(); // 기본효과 제한
+	       e.preventDefault(); // 기본효과 제한, 기본효과 : 이미지 보여주기
 	    });
 	    // 드래그해서 드롭한 파일들 ajax 업로드 요청
 	    $(".fileDrop").on("drop", function(e){
@@ -39,9 +39,10 @@
 	                if(checkImageType(data)){ 
 	                    str = "<div><a href='${path}/fileUpload/displayFile?fileName="+getImageLink(data)+"'>";
 	                    str += "<img src='${path}/fileUpload/displayFile?fileName="+encodeURI(data)+"'></a>";
+	                    // encodeURI 입혀야 됨
 	                // 일반파일이면 다운로드링크
 	                } else { 
-	                    str = "<div><a href='${path}/fileUpload/displayFile?fileName="+data+"'>"+getOriginalName(data)+"</a>";
+	                    str = "<div><a href='${path}/fileUpload/displayFile?fileName="+encodeURI(data)+"'>"+getOriginalName(data)+"</a>";
 	                }
 	                // 삭제 버튼
 	                str += "<span data-src="+data+">[삭제]</span></div>";
