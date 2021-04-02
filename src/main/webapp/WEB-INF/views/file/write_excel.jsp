@@ -36,17 +36,27 @@ function checkFileType(filePath) {
    	var fileFormat = file.split("."); 
    	var fileType = fileFormat[1];
    	
+
+   	var data ={
+   			"excelType" : 	fileType,
+   			"excelFile" : 	file
+   	};
+    
+    
     if (confirm("업로드 하시겠습니까?")) {
     	$("#excelUploadForm").attr("action","/fileUpload/excelUploadAjax.do");
       	var options = {
 
-        success : function(data) {
-            console.log(data);
-          	alert("모든 데이터가 업로드 되었습니다.");
-
-        },
-        type : "POST",
-        data : {"excelType" : fileType}
+	        success : function(data) {
+	            console.log(data);
+	          	alert("엑셀파일 업로드가 완료되었습니다.");
+	
+	        },
+	        type : "POST",
+	        data : data,
+	        error : function(e){
+	        		alert("엑셀파일 업로드가 실패하였습니다.");
+	        }
         };
       
       $("#excelUploadForm").ajaxSubmit(options);

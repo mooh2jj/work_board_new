@@ -23,21 +23,21 @@ public class CommonExceptionAdvice {
 		return "error/error";
 	}
 	
-	@ExceptionHandler(ArithmeticException.class)	// ArithmeticException에 대해서 호출됨.
-	public String arithmeticException(Exception ex, Model model) {
-		logger.info("Exception....."+ex.getMessage());
-		model.addAttribute("exception", ex);
-		logger.info(model.toString());
-		return "error/error";
-	}
-	
-	@ExceptionHandler(NullPointerException.class)	// NullPointerException에 대해서 호출됨.
-	public String nullPointerException(Exception ex, Model model) {
-		logger.info("Exception....."+ex.getMessage());
-		model.addAttribute("exception", ex);
-		logger.info(model.toString());
-		return "error/error";
-	}
+//	@ExceptionHandler(ArithmeticException.class)	// ArithmeticException에 대해서 호출됨.
+//	public String arithmeticException(Exception ex, Model model) {
+//		logger.info("Exception....."+ex.getMessage());
+//		model.addAttribute("exception", ex);
+//		logger.info(model.toString());
+//		return "error/error";
+//	}
+//	
+//	@ExceptionHandler(NullPointerException.class)	// NullPointerException에 대해서 호출됨.
+//	public String nullPointerException(Exception ex, Model model) {
+//		logger.info("Exception....."+ex.getMessage());
+//		model.addAttribute("exception", ex);
+//		logger.info(model.toString());
+//		return "error/error";
+//	}
 	
 
 //	404 에러 페이지, 버전 4로 맞춰야

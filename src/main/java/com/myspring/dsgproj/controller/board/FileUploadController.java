@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.myspring.dsgproj.dto.board.BoardDTO;
 import com.myspring.dsgproj.service.ExcelService;
@@ -72,6 +73,7 @@ public class FileUploadController {
 		return "file/write_excel";
 	}
 	
+	// 단일파일 업로드
 	@RequestMapping(value = "insert.do", method = RequestMethod.POST)
 	public String uploadFileSet(MultipartFile file, BoardDTO dto, HttpSession session, Model model) throws Exception {
 		
@@ -108,6 +110,7 @@ public class FileUploadController {
 		return "file/uploadResult";
 	}
 	
+	// 다중파일 업로드
 	@RequestMapping(value="insert_multi.do", method = RequestMethod.POST)
 	public String insert_multi(MultipartHttpServletRequest mtfRequest, BoardDTO dto, HttpSession session, Model model) throws Exception {
 		
@@ -148,7 +151,8 @@ public class FileUploadController {
 		return "file/uploadResult";
 	}
 	
-//	uploadAjaxAction, produces = "text/plain;charset=utf-8" : 파일한글처리
+	// ajax방식 파일업로드 
+	// uploadAjaxAction, produces = "text/plain;charset=utf-8" : 파일한글처리
 	@ResponseBody
 	@RequestMapping(value = "uploadAjaxAction.do", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public ResponseEntity<String> uploadAjaxAction(MultipartHttpServletRequest mtfRequest) throws Exception {
@@ -171,26 +175,40 @@ public class FileUploadController {
 		return new ResponseEntity<String>("fileUpload success!", HttpStatus.CREATED);	//HttpStatus.CREATED : 201, dataType : text로 해야..
 	}
 	
-//	excelUploadAjax
+	// excelUploadAjax : 엑셀 업로드
+	@ResponseBody
 	@RequestMapping(value = "excelUploadAjax.do", method = RequestMethod.POST)
-	public String excelUploadAjax(MultipartHttpServletRequest request, Model model) throws Exception {
+	public ResponseEntity excelUploadAjax(MultipartHttpServletRequest mtfRequest, Model model) throws Exception {
 		logger.info("excelUploadAjax.do start...");
 		
 		List<BoardDTO> list = new ArrayList<>();
 		
-//		MultipartFile excelFile = request.getFile("excelFile");
+		String excelType = mtfRequest.getParameter("excelType");
+		MultipartFile excelFile = mtfRequest.getFile("excelFile");
+
+		String savedName = "";
 		
-		String excelType = request.getParameter("excelType");
-		
+		// 엑셀 읽기 service
 		if(excelType.equals("xlsx")) {
-			list = excelService.xlsxExcelReader(request);
+			list = excelService.xlsxExcelReader(mtfRequest);
 		} else if (excelType.equals("xls")) {
-			list = excelService.xlsExcelReader(request);
+			list = excelService.xlsExcelReader(mtfRequest);
 		}
 		
-		model.addAttribute("msg", "fileUpladed");
+		if(!excelFile.isEmpty()) {	// 파일이 있다면,
+			savedName = new String(excelFile.getOriginalFilename().getBytes("8859_1"), "UTF-8");		// 한글깨짐 방지
+			
+			logger.info("originalName: " + savedName);
+			logger.info("extension: " + FilenameUtils.getExtension(savedName));
+			logger.info("size:" + excelFile.getSize());
+			logger.info("contentType:" + excelFile.getContentType());
+			
+			savedName = UploadFileUtils.uploadFile(uploadPath, excelFile.getOriginalFilename(), excelFile.getBytes());
+			
+			model.addAttribute("msg", "fileUpladed");
+		}
 		
-		return "file/uploadResult";
+		return new ResponseEntity(model, HttpStatus.OK);
 	}
 
 }

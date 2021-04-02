@@ -40,22 +40,29 @@
 	</delete>
 
 	<!-- insertExcel -->
-	<insert id="insertExcel">
+	<insert id="insertExcel" parameterType="com.myspring.dsgproj.dto.board.BoardDTO">
+		<!-- bno : auto_increment 설정 & selectKey 태그 : 
+		MyBatis에서 insert한 자동증가값을 가져오기 위해서는 SelectKey를 사용 -->
+	    <selectKey keyProperty="bno" resultType="int" order="BEFORE">
+        	SELECT IFNULL(MAX(bno)+1, 1) FROM dsg_board
+    	</selectKey>
 		INSERT INTO dsg_board
 		(
 		bno
 		, title
 		, content
 		, writer
+		, regDate
 		, sessionId
 		)
 		VALUES
 		<foreach collection="list" item="item" separator=" , ">
 			(
-			(SELECT IFNULL(MAX(bno)+1, 1)FROM dsg_board dsb)
+			#{item.bno}
 			, #{item.title}
 			, #{item.content}
 			, #{item.writer}
+			, NOW()
 			, #{item.sessionId}
 			)
 		</foreach>

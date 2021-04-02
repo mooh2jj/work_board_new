@@ -14,10 +14,10 @@
 	var msg = "${msg}";
 	
 	if( msg == 'fileUpladed'){
-		alert("파일이 업로드되었습니다.");
+		alert("파일 업로드가 완료되었습니다.");
 		location.href = "${path}/board/list.do";
 	} else {
-		alert("파일 업로드에 실패하였습니다.");
+		alert("파일 업로드가 실패하였습니다.");
 		location.href = "${path}/board/list.do";
 	}
 

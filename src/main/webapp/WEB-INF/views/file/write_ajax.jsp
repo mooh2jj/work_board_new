@@ -36,7 +36,8 @@ function checkExtension(fileName, fileSize) {
 			var files = inputFile[0].files;
 			console.log("files",files);
 			console.log("files.length",files.length);
- 			for(var i =0; i <files.length; i++){
+ 			
+			for(var i =0; i <files.length; i++){
 		 		if(!checkExtension(files[i].name, files[i].size)){
 					return false;
 				}  

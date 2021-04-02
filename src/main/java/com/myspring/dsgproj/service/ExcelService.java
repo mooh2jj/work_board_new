@@ -48,7 +48,7 @@ public class ExcelService {
 			HSSFRow curRow;
 			HSSFCell curCell;
 			
-			BoardDTO vo;
+			BoardDTO dto;
 			
 			// Sheet 탐색 for문
 			for (int sheetIndex = 0; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
@@ -60,8 +60,12 @@ public class ExcelService {
 					// row 0은 헤더정보이기 때문에 무시
 					if (rowIndex != 0) {
 						curRow = curSheet.getRow(rowIndex);
-						vo = new BoardDTO();
+						dto = new BoardDTO();
 						String value;
+						
+						if(curRow.getCell(0) == null) {
+							continue;
+						}
 						
 						// row의 첫번째 cell값이 비어있지 않는 경우만 cell탐색
 						if (curRow.getCell(0) != null) {
@@ -97,10 +101,10 @@ public class ExcelService {
 										// 현재 colum index에 따라서 vo입력
 										switch (cellIndex) {
 										case 0: // 제목
-										vo.setTitle(value);
+										dto.setTitle(value);
 										break;
 										case 1: // 내용
-										vo.setContent(value);
+										dto.setContent(value);
 										break;
 
 										default:
@@ -108,14 +112,15 @@ public class ExcelService {
 										}
 									}	// end if
 								}	// end for
-								// cell 탐색 이후 vo 추가
+								// cell 탐색 이후 dto 추가
+								// wiriter, sessionId vo에 추가
 								String sessionId = session.getId();
 								
-								vo.setSessionId(sessionId);
+								dto.setSessionId(sessionId);
 								// writer 로그인시 세션에서 name으로 받아오기
 								String writer = (String) session.getAttribute("name");
-								vo.setWriter(writer);
-								list.add(vo);
+								dto.setWriter(writer);
+								list.add(dto);
 							}	// end
 						}	// end if
 					}
@@ -150,7 +155,7 @@ public class ExcelService {
 			XSSFRow curRow;
 			XSSFCell curCell;
 			
-			BoardDTO vo;
+			BoardDTO dto;
 			
 			// Sheet 탐색 for문
 			for (int sheetIndex = 0; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
@@ -162,8 +167,9 @@ public class ExcelService {
 					// row 0은 헤더정보이기 때문에 무시
 					if (rowIndex != 0) {
 						curRow = curSheet.getRow(rowIndex);
-						vo = new BoardDTO();
+						dto = new BoardDTO();
 						String value;
+						
 						
 						// row의 첫번째 cell값이 비어있지 않는 경우만 cell탐색
 						if (curRow.getCell(0) != null) {
@@ -199,10 +205,10 @@ public class ExcelService {
 										// 현재 colum index에 따라서 vo입력
 										switch (cellIndex) {
 										case 0: // 제목
-											vo.setTitle(value);
+											dto.setTitle(value);
 											break;
 										case 1: // 내용
-											vo.setContent(value);
+											dto.setContent(value);
 											break;
 											
 										default:
@@ -210,14 +216,14 @@ public class ExcelService {
 										}
 									}	// end if
 								}	// end for
-								// cell 탐색 이후 vo 추가
+								// cell 탐색 이후 dto 추가
 								String sessionId = session.getId();
 								
-								vo.setSessionId(sessionId);
+								dto.setSessionId(sessionId);
 								// writer 로그인시 세션에서 name으로 받아오기
 								String writer = (String) session.getAttribute("name");
-								vo.setWriter(writer);
-								list.add(vo);
+								dto.setWriter(writer);
+								list.add(dto);
 							}	// end
 						}	// end if
 					}
