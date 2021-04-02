@@ -24,7 +24,7 @@
 
 $(document).ready(function(){
     $(".fileDrop").on("dragenter dragover", function(event) {
-         event.preventDefault();         // 기본효과를 막음
+         event.preventDefault();         // 내용이 바로 보여지는 기본효과를 막음
     });
     // event : jQuery의 이벤트
     // originalEvent : js의 오리지날이벤트
