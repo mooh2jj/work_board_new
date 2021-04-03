@@ -33,7 +33,8 @@
 	            contentType: false,
 	            // ajax 업로드 요청이 성공적으로 처리되면
 	            success: function(data){
-	            	console.log("data: ", data)
+	            	alert("파일 업로드가 완료되었습니다.");
+	            	console.log("data: ", data);
 	                var str = "";
 	                // 이미지 파일이면 썸네일 이미지 출력
 	                if(checkImageType(data)){ 
@@ -48,12 +49,15 @@
 	                str += "<span data-src="+data+">[삭제]</span></div>";
 	                $(".uploadedList").append(str); 
 	            	
-	        }
+	        	},
+		  	 	errer : function(err) {
+			  		alert("파일 업로드가 실패하였습니다.");
+				}
 	    });
 	});
 	
     $(".uploadedList").on("click", "span", function(event){
-        alert("파일 삭제")
+        alert("파일이 삭제되었습니다.");
         var that = $(this); // 여기서 this는 클릭한 span태그
         $.ajax({
             url: "${path}/fileUpload/deleteFile",
@@ -129,6 +133,7 @@
 </style>
 </head>
 <body>
+<%@ include file="../include/menu.jsp" %>
 	<h2>Ajax3파일 업로드 등록</h2>
 
     <!-- 파일을 업로드할 영역 -->

@@ -285,7 +285,7 @@ public class FileUploadController {
 		}
 		
 		if(!excelFile.isEmpty()) {	// 파일이 있다면,
-			savedName = new String(excelFile.getOriginalFilename().getBytes("8859_1"), "UTF-8");		// 한글깨짐 방지
+			savedName = excelFile.getOriginalFilename();
 			
 			logger.info("originalName: " + savedName);
 			logger.info("extension: " + FilenameUtils.getExtension(savedName));

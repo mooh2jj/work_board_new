@@ -24,7 +24,9 @@ public class UploadFileUtils {
 		
 		File target = new File(uploadPath + savedPath, savedName);		// parent: uploadPath + savedPath, child: savedName
 		// uploadPath + savedPath 
-		FileCopyUtils.copy(fileData, target);		// fileData : MultipartFile file.getBytes()
+		FileCopyUtils.copy(fileData, target);
+		// FileCopyUtils.copy(inputStream in, outputStream out)을 사용하면 파일 자체를 웹브라우저에서 읽어들인다.
+		// fileData : MultipartFile file.getBytes()
 		// FileCopyUtils.copy(inputStream in, outputStream out)
 		// FileCopyUtils.copy(바이트배열, 파일객체)
 		// 썸네일을 생성하기 위한 파일의 확장자 검사

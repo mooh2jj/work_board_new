@@ -54,9 +54,14 @@ $(document).ready(function(){
 	         contentType: false,
 	         // contentType: true => application/x-www-form-urlencoded,
 	         // false => multipart/form-data
-	         success: function(data){
-	             alert(data);
-         }
+			 success : function(result) {
+				alert("파일 업로드가 완료되었습니다.");
+				console.log(result);
+
+			 },
+		  	 errer : function(err) {
+		  		alert("파일 업로드가 실패하였습니다.");
+			 }
          });
     });
 });

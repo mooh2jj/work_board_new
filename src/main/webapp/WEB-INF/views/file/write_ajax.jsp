@@ -55,11 +55,13 @@ function checkExtension(fileName, fileSize) {
 				type : 'POST',
 				dataType : 'text',
 				success : function(result) {
-					alert(result)
-					console.log(result)
+					alert("파일 업로드가 완료되었습니다.");
+					console.log(result);
 
+				},
+			  	errer : function(err) {
+			  		alert("파일 업로드가 실패하였습니다.");
 				}
-				
 			}); 
 			
 		});	
@@ -74,15 +76,15 @@ function checkExtension(fileName, fileSize) {
 <div align="center">
 <h2>Ajax파일 업로드 등록</h2>
 
-					<div class="uploadDiv">
-						<input type="file" name="uploadFile" multiple="multiple">
-					</div>
-					<div class="uploadResult">
-					</div>
+	<div class="uploadDiv">
+		<input type="file" name="uploadFile" multiple="multiple">
+	</div>
+	<div class="uploadResult">
+	</div>
 
-		
-					<button type="button" id="btnSave">저장</button>
-					<button type="reset" id="btnCancle">취소</button>
+
+	<button type="button" id="btnSave">저장</button>
+	<button type="reset" id="btnCancle">취소</button>
 				
 
 </div> 	

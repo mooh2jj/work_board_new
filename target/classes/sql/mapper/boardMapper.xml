@@ -42,7 +42,10 @@
 	<!-- insertExcel -->
 	<insert id="insertExcel" parameterType="com.myspring.dsgproj.dto.board.BoardDTO">
 		<!-- bno : auto_increment 설정 & selectKey 태그 : 
-		MyBatis에서 insert한 자동증가값을 가져오기 위해서는 SelectKey를 사용 -->
+		MyBatis에서 insert한 자동증가값을 가져오기 위해서는 SelectKey를 사용 
+		다른 sql에서는 스토어드 프로시저가 임시로  commit된 걸 저장하는데 mariaDB는 그걸 못함. 
+		selectkey가 그 역할을 대신 해줌. 
+		-->
 	    <selectKey keyProperty="bno" resultType="int" order="BEFORE">
         	SELECT IFNULL(MAX(bno)+1, 1) FROM dsg_board
     	</selectKey>

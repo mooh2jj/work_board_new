@@ -61,11 +61,10 @@
 	<!-- 파일 멀티파트 리졸버 -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="52428800" />
-		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
 
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="I://resources//fileupload" />	<!-- 윈도우 디렉토리 구분자 (//) -->
+		<beans:constructor-arg value="I://JavaStudy//JavaWeb Develement//Spring//lecture5_saturday//work_board_new//src//main//webapp//resources//fileupload" />	<!-- 윈도우 디렉토리 구분자 (//) -->
 	</beans:bean>
 	
 	

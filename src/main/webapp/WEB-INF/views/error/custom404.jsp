@@ -8,5 +8,6 @@
 </head>
 <body>
 <h2>해당 URL은 존재하지 않는 페이지입니다.</h2>
+<a href="#" onclick="history.back();">뒤로 가기</a>
 </body>
 </html>
