@@ -188,12 +188,23 @@ public class FileUploadController {
 	
     @ResponseBody // view가 아닌 data리턴
     @RequestMapping(value="uploadAjaxAction2.do", method=RequestMethod.POST, produces="text/plain;charset=utf-8")
-    public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception {
-        logger.info("originalName : "+file.getOriginalFilename());
-        logger.info("size : "+file.getSize());
-        logger.info("contentType : "+file.getContentType());
+    public ResponseEntity<String> uploadAjax(MultipartFile file) {
+    	logger.info("uploadAjaxAction2.do start...");
+    	String savedName = "";
+    	
+    	if(!file.isEmpty()) {	// 파일이 있다면,
+	        logger.info("originalName : "+file.getOriginalFilename());
+	        logger.info("size : "+file.getSize());
+	        logger.info("contentType : "+file.getContentType());
+    	}
+        try {
+        	savedName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+        	return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
+        } catch (Exception e) {
+        	
+        	return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         
-        return new ResponseEntity<String>(UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes()), HttpStatus.OK);
     }
 	
 	
@@ -267,7 +278,7 @@ public class FileUploadController {
 	// excelUploadAjax : 엑셀 업로드
 	@ResponseBody
 	@RequestMapping(value = "excelUploadAjax.do", method = RequestMethod.POST)
-	public ResponseEntity excelUploadAjax(MultipartHttpServletRequest mtfRequest, Model model) throws Exception {
+	public ResponseEntity<String> excelUploadAjax(MultipartHttpServletRequest mtfRequest) {
 		logger.info("excelUploadAjax.do start...");
 		
 		List<BoardDTO> list = new ArrayList<>();
@@ -291,13 +302,16 @@ public class FileUploadController {
 			logger.info("extension: " + FilenameUtils.getExtension(savedName));
 			logger.info("size:" + excelFile.getSize());
 			logger.info("contentType:" + excelFile.getContentType());
-			
-			savedName = UploadFileUtils.uploadFile(uploadPath, excelFile.getOriginalFilename(), excelFile.getBytes());
-			
-			model.addAttribute("msg", "fileUpladed");
 		}
 		
-		return new ResponseEntity(model, HttpStatus.OK);
+        try {
+        	savedName = UploadFileUtils.uploadFile(uploadPath, excelFile.getOriginalFilename(), excelFile.getBytes());
+        	return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
+        } catch (Exception e) {
+        	
+        	return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
 	}
 
 }
